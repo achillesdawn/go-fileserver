@@ -5,6 +5,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
@@ -24,7 +25,8 @@ func handleFileUpload(r *http.Request) error {
 
 	fmt.Printf("filename: %s\nsize: %d\n", header.Filename, header.Size)
 
-	writeFile, err := os.Create("received")
+	path := filepath.Join("received", header.Filename)
+	writeFile, err := os.Create(path)
 	if err != nil {
 		return fmt.Errorf("could not create received file: %w", err)
 	}
@@ -65,7 +67,6 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("could not write to response")
 		return
 	}
-
 }
 
 func main() {
