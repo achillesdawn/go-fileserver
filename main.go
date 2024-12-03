@@ -41,12 +41,14 @@ func handleFileUpload(r *http.Request) error {
 
 func uploadHandler(w http.ResponseWriter, r *http.Request) {
 
+	printHeaders(r)
+
 	if r.Method != "POST" {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		w.Write([]byte("method not allowed"))
+		return
 	}
 
-	printHeaders(r)
 	err := handleFileUpload(r)
 	if err != nil {
 		w.WriteHeader(http.StatusUnprocessableEntity)
@@ -54,12 +56,14 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			fmt.Println("could not write to response")
 		}
+		return
 	}
 
 	w.WriteHeader(http.StatusOK)
 	_, err = w.Write([]byte("status: ok"))
 	if err != nil {
 		fmt.Println("could not write to response")
+		return
 	}
 
 }
