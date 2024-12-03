@@ -9,26 +9,36 @@ import (
 	"os"
 )
 
-func main() {
-	url := "http://192.168.2.100:5000/upload"
-
-	file, err := os.Open("client/hello.txt")
+func createFileForm(path string) (*bytes.Buffer, *multipart.Writer, error) {
+	file, err := os.Open(path)
 	if err != nil {
-		panic(err)
+		return nil, nil, fmt.Errorf("could not open file: %w", err)
 	}
 
 	var body = &bytes.Buffer{}
 	writer := multipart.NewWriter(body)
 	part, err := writer.CreateFormFile("file", file.Name())
 	if err != nil {
-		panic(err)
+		return nil, nil, fmt.Errorf("could not create form file: %w", err)
 	}
 
 	_, err = io.Copy(part, file)
 	if err != nil {
-		panic(err)
+
+		return nil, nil, fmt.Errorf("copy error creating multipart form: %w", err)
 	}
 	writer.Close()
+
+	return body, writer, nil
+}
+
+func main() {
+	url := "http://192.168.2.100:5000/upload"
+
+	body, writer, err := createFileForm("client/hello.txt")
+	if err != nil {
+		panic(err)
+	}
 
 	req, err := http.NewRequest(http.MethodPost, url, body)
 	if err != nil {
