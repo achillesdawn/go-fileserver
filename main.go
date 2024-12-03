@@ -39,17 +39,24 @@ func handleFileUpload(r *http.Request) error {
 	return nil
 }
 
-func uploadHander(w http.ResponseWriter, r *http.Request) {
+func uploadHandler(w http.ResponseWriter, r *http.Request) {
+
+	if r.Method != "POST" {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		w.Write([]byte("method not allowed"))
+	}
 
 	printHeaders(r)
 	err := handleFileUpload(r)
 	if err != nil {
+		w.WriteHeader(http.StatusUnprocessableEntity)
 		_, err := w.Write([]byte(err.Error()))
 		if err != nil {
 			fmt.Println("could not write to response")
 		}
 	}
 
+	w.WriteHeader(http.StatusOK)
 	_, err = w.Write([]byte("status: ok"))
 	if err != nil {
 		fmt.Println("could not write to response")
@@ -59,7 +66,7 @@ func uploadHander(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	mux := http.NewServeMux()
-	mux.HandleFunc("/upload", uploadHander)
+	mux.HandleFunc("/upload", uploadHandler)
 
 	server := http.Server{
 		Addr:    ":5000",
