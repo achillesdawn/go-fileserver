@@ -72,7 +72,7 @@ func main() {
 		Addr:    ":5000",
 		Handler: mux,
 	}
-
+	fmt.Println("Listening on port :5000")
 	if err := server.ListenAndServe(); err != nil {
 		panic(err)
 	}
