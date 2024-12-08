@@ -1,4 +1,4 @@
-package fsutils
+package storage
 
 import "testing"
 

@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/achillesdawn/go-fileserver/fsutils"
+	"github.com/achillesdawn/go-fileserver/storage"
 )
 
 func printHeaders(r *http.Request) {
@@ -73,7 +73,7 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	err := fsutils.CreateDirs()
+	err := storage.CreateDirs()
 	if err != nil {
 		panic(err)
 	}
