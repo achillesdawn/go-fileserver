@@ -9,7 +9,8 @@ import (
 func createDir(name string) error {
 	info, err := os.Stat(name)
 	if errors.Is(err, os.ErrNotExist) {
-		err = os.Mkdir("assets", 0400)
+		fmt.Println("creating asset dir")
+		err = os.Mkdir("assets", 0600)
 		if err != nil {
 			return fmt.Errorf("could not create %s dir: %w", name, err)
 		}
@@ -26,7 +27,6 @@ func createDir(name string) error {
 
 func CreateDirs() error {
 
-	fmt.Println("creating asset dir")
 	createDir("assets")
 
 	return nil
