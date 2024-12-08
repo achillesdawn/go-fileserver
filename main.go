@@ -27,7 +27,7 @@ func handleFileUpload(r *http.Request) error {
 
 	fmt.Printf("filename: %s\nsize: %d\n", header.Filename, header.Size)
 
-	path := filepath.Join("received", header.Filename)
+	path := filepath.Join("assets", header.Filename)
 
 	writeFile, err := os.Create(path)
 	if err != nil {
