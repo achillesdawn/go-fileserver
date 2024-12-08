@@ -55,6 +55,7 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err := handleFileUpload(r)
+
 	if err != nil {
 		w.WriteHeader(http.StatusUnprocessableEntity)
 		_, err := w.Write([]byte(err.Error()))
@@ -80,6 +81,19 @@ func main() {
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/upload", uploadHandler)
+
+	serveDir, err := filepath.Abs("./assets")
+	if err != nil {
+		panic(err)
+	}
+
+	mux.Handle(
+		"/files/",
+		http.StripPrefix(
+			"/files/",
+			http.FileServer(http.Dir(serveDir)),
+		),
+	)
 
 	server := http.Server{
 		Addr:    ":5000",

@@ -34,8 +34,9 @@ func createFileForm(path string) (*bytes.Buffer, *multipart.Writer, error) {
 
 func main() {
 	url := "http://192.168.2.100:5000/upload"
+	// url := "http://127.0.0.1:5000/upload"
 
-	body, writer, err := createFileForm("client/more.txt")
+	body, writer, err := createFileForm("client/hello.txt")
 	if err != nil {
 		panic(err)
 	}
