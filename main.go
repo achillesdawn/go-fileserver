@@ -7,6 +7,8 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/achillesdawn/go-fileserver/fsutils"
 )
 
 func printHeaders(r *http.Request) {
@@ -26,6 +28,7 @@ func handleFileUpload(r *http.Request) error {
 	fmt.Printf("filename: %s\nsize: %d\n", header.Filename, header.Size)
 
 	path := filepath.Join("received", header.Filename)
+
 	writeFile, err := os.Create(path)
 	if err != nil {
 		return fmt.Errorf("could not create received file: %w", err)
@@ -70,6 +73,11 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	err := fsutils.CreateDirs()
+	if err != nil {
+		panic(err)
+	}
+
 	mux := http.NewServeMux()
 	mux.HandleFunc("/upload", uploadHandler)
 
