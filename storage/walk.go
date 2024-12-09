@@ -18,6 +18,10 @@ func Walk(path string) []FileInfo {
 	fileList := make([]FileInfo, 0, 100)
 	filepath.Walk(path, func(path string, info fs.FileInfo, err error) error {
 
+		if err != nil {
+			return err
+		}
+
 		if !info.IsDir() {
 
 			var file = FileInfo{
