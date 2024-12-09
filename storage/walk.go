@@ -1,6 +1,7 @@
 package storage
 
 import (
+	"fmt"
 	"io/fs"
 	"path/filepath"
 	"time"
@@ -19,6 +20,7 @@ func Walk(path string) []FileInfo {
 	filepath.Walk(path, func(path string, info fs.FileInfo, err error) error {
 
 		if err != nil {
+			fmt.Printf("%s", err.Error())
 			return err
 		}
 
