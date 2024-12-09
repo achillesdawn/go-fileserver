@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/achillesdawn/go-fileserver/storage"
 )
 
@@ -12,10 +10,7 @@ func main() {
 		panic(err)
 	}
 
-	server := newServer(":5000")
-
-	PrintLocalAddress()
-	fmt.Println("Listening on port :5000")
+	server := newServer(5000)
 
 	if err := server.ListenAndServe(); err != nil {
 		panic(err)

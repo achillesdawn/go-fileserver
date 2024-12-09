@@ -82,7 +82,7 @@ func fileListHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(files)
 }
 
-func newServer(addr string) *http.Server {
+func newServer(port uint16) *http.Server {
 	mux := http.NewServeMux()
 
 	serveDir, err := filepath.Abs("./assets")
@@ -107,9 +107,11 @@ func newServer(addr string) *http.Server {
 	mux.HandleFunc("/filelist", fileListHandler)
 
 	server := http.Server{
-		Addr:    addr,
+		Addr:    fmt.Sprintf(":%d", port),
 		Handler: mux,
 	}
+
+	PrintLocalAddress(port)
 
 	return &server
 }
