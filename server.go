@@ -11,8 +11,6 @@ import (
 	"github.com/achillesdawn/go-fileserver/storage"
 )
 
-var serveDir string
-
 func handleFileUpload(r *http.Request) error {
 
 	file, header, err := r.FormFile("file")
@@ -75,6 +73,11 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func fileListHandler(w http.ResponseWriter, r *http.Request) {
+
+	serveDir, err := filepath.Abs("./assets")
+	if err != nil {
+		panic(err)
+	}
 
 	files := storage.Walk(serveDir)
 
